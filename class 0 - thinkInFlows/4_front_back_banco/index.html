@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Usuários</title>
+</head>
+<body>
+    <form onsubmit="return false;">
+        <input type="text" id="nome" placeholder="Nome">
+        <input type="email" id="email" placeholder="E-mail">
+        <button onclick="adicionarNovoItem()">Adicionar</button>
+    </form>
+    
+    <ul id="lista">
+    </ul>
+
+    <script>
+        const nomeInput = document.getElementById('nome');
+        const emailInput = document.getElementById('email');
+        const lista = document.getElementById('lista');
+
+        async function carregarUsuarios() {
+            try {
+                const response = await fetch('http://localhost:3000/api/usuarios');
+                const usuarios = await response.json();
+                
+                lista.innerHTML = '';
+                usuarios.forEach(user => {
+                    const item = document.createElement('li');
+                    item.textContent = `${user.nome} - ${user.email}`;
+                    lista.append(item);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar usuários:', error);
+            }
+        }
+
+        async function adicionarNovoItem() {
+            if (!nomeInput.value || !emailInput.value) return;
+
+            const novoUsuario = {
+                nome: nomeInput.value,
+                email: emailInput.value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/usuarios', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(novoUsuario)
+                });
+
+                if (response.ok) {
+                    nomeInput.value = '';
+                    emailInput.value = '';
+                    carregarUsuarios();
+                }
+            } catch (error) {
+                console.error('Erro ao adicionar usuário:', error);
+            }
+        }
+
+        // Carrega a lista inicial
+        carregarUsuarios();
+    </script>
+</body>
+</html>

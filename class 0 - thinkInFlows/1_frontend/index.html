@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head class="formatacao">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style class="estilo">
+
+    </style>
+</head>
+
+<body class="conteudo">
+
+    <form onsubmit="return false;">
+        <input type="text" name="" id="campo">
+        <button onclick="adicionarNovoItem()">botao</button>
+    </form>
+
+    <ul id="lista">
+
+    </ul>
+
+
+    <script class="logica">
+        const campo = document.getElementById('campo');
+        const lista = document.getElementById('lista');
+
+        function adicionarNovoItem() {
+            const item = document.createElement('li');
+
+            item.textContent = campo.value;
+
+            lista.append(item);
+        }
+
+    </script>
+</body>
+
+</html>
